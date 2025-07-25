@@ -76,3 +76,11 @@ def test_get_running_container_id(fake_cgroup: Path) -> None:
     container_id = "b78eebb08f89158ed6e2ed2fe"
     fake_cgroup.write_text(f"13:cpuset:/docker/{container_id}")
     assert utils.get_running_in_container_id() == container_id
+
+
+def test_get_running_container_id_slice_format_cgroup_file(fake_cgroup: Path) -> None:
+    container_id = "3d17e059d7893fead3151295aab40fc815390bbe1a2c3b2e40158471394e1f0e"
+    fake_cgroup.write_text(
+        f"1:name=systemd:/docker_containers.slice/ed89931c86a722c4180c572916d579f4e181bc32c47fb700be9db60f14443cb1/docker/{container_id}"
+    )
+    assert utils.get_running_in_container_id() == container_id
